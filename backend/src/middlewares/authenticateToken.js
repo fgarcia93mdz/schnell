@@ -15,7 +15,7 @@ const authenticateToken = (req, res, next) => {
       if (blacklistedToken) {
         return res.status(403).json({ error: 'Por favor token expirado por cierre de sesión' });
       }
-      jwt.verify(token, process.env.TOKEN_SECRET, (err, usuario) => {
+      jwt.verify(token, process.env.JWT_SECRET, (err, usuario) => {
         if (err) {
           if (err.name === 'TokenExpiredError') {
             return res.status(403).json({ error: 'El token ha expirado, por favor inicie sesión de nuevo' });
