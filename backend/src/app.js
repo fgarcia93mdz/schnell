@@ -22,16 +22,18 @@ const { initialize } = require("./config/socket");
 require('module-alias/register');
 
 // Rutas agrupadas
-/*
+
 const {
   usuarioRoutes,
-  empresaRoutes,
+  autentificacionRoutes,
+  /* empresaRoutes,
   cotizacionRoutes,
   ofertaRoutes,
   membresiaRoutes,
   notificacionRoutes
+  */
 } = require("./routes");
- */
+
 
 console.log("Servidor Schnell iniciando...");
 
@@ -60,8 +62,9 @@ app.use(session({
 }));
 
 // Rutas API
-/*
 app.use("/api/usuarios", usuarioRoutes);
+app.use("/api/autentificacion", autentificacionRoutes);
+/*
 app.use("/api/empresas", empresaRoutes);
 app.use("/api/cotizaciones", cotizacionRoutes);
 app.use("/api/ofertas", ofertaRoutes);
