@@ -39,9 +39,6 @@ router.post('/', authenticate, validarRegistrarUsuario, registrarUsuario);
 // Listar usuarios (admin_schnell o empresa_admin)
 router.get('/', authenticate, validarListarUsuarios, listarUsuarios);
 
-// Obtener perfil propio
-router.get('/perfil', authenticate, validarObtenerPerfilUsuario, obtenerPerfilUsuario);
-
 // Actualizar usuario (por ID)
 router.put('/:id', authenticate, validarActualizarUsuario, actualizarUsuario);
 
