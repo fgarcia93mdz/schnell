@@ -1,11 +1,11 @@
 require('dotenv').config();
 
-const TOKEN_SECRET = process.env.TOKEN_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET;
 
-if (!TOKEN_SECRET) {
-  throw new Error("TOKEN_SECRET no está definido en el archivo .env");
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET no está definido en el archivo .env");
 } else {
   console.log("Token declarado correctamente")
 }
 
-module.exports = TOKEN_SECRET;
+module.exports = JWT_SECRET;
