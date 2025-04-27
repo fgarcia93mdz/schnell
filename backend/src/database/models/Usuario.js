@@ -5,6 +5,14 @@ module.exports = (sequelize, DataTypes) => {
     nombre: { type: DataTypes.STRING, allowNull: false },
     email: { type: DataTypes.STRING, allowNull: false, unique: true },
     contraseña: { type: DataTypes.STRING, allowNull: false },
+    estado_clave: {
+      type: DataTypes.ENUM('pendiente', 'cambiada'),
+      defaultValue: 'pendiente'
+    },
+    fecha_ultimo_cambio_clave: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
     rol: {
       type: DataTypes.ENUM('admin_schnell', 'empresa_admin', 'empresa_usuario'),
       defaultValue: 'empresa_usuario'
