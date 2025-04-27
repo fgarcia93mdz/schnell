@@ -1,25 +1,24 @@
 const ROLES = require("../config/roles");
 const SUBROLES = require("../config/subroles");
 
-const verifyRoles = (allowedRoles, allowedSubRoles) => {
+const verifyRoles = (allowedRoles = "*", allowedSubRoles = "*") => {
     return (req, res, next) => {
-        if (!req?.usuario?.rol_id || !req?.usuario?.sub_rol_id) {
-            return res.status(401).json({ mensaje: "sin autorización generada" });
+        if (!req?.usuario?.rol || !req?.usuario?.sub_rol) {
+            return res.status(401).json({ mensaje: "Sin autorización generada" });
         }
 
         const rolesArray = allowedRoles === "*" ? Object.values(ROLES) : allowedRoles.map(role => ROLES[role]);
+        const subRolesArray = allowedSubRoles === "*" ? Object.values(SUBROLES) : allowedSubRoles.map(subRole => SUBROLES[subRole]);
 
-        const subRolesArray = allowedSubRoles === "*" ? Object.values(SUBROLES) : Array.isArray(allowedSubRoles) ? allowedSubRoles.map(subRole => SUBROLES[subRole]) : [];
+        const roleMatch = rolesArray.includes(req.usuario.rol);
+        const subRoleMatch = subRolesArray.includes(req.usuario.sub_rol);
 
-        const roleResult = rolesArray.find(val => val === req.usuario.rol_id);
-        const subRoleResult = subRolesArray.find(val => val === req.usuario.sub_rol_id);
-
-        if (!roleResult || !subRoleResult) {
-            return res.status(401).json({ mensaje: "sin autorización" });
+        if (!roleMatch || !subRoleMatch) {
+            return res.status(401).json({ mensaje: "No autorizado" });
         }
 
         next();
-    }
-}
+    };
+};
 
 module.exports = verifyRoles;

@@ -1,9 +1,7 @@
 const SUBROLES = {
-    "Gerente": 1,
-    "VIP": 2,
-    "Jefe": 3,
-    "Valet Parking": 4,
-    "Guardarropa": 5,
+    COMPRADOR_SR: 'comprador_sr',
+    COMPRADOR_JR: 'comprador_jr',
+    GERENCIA: 'gerencia',
 };
 
 module.exports = SUBROLES;

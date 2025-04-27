@@ -1,8 +1,7 @@
 const ROLES = {
-    "administrador": 1,
-    "jefatura": 2,
-    "supervisor": 3,
-    "asistente": 4,
-}
+    ADMIN_SCHNELL: 'admin_schnell',
+    EMPRESA_ADMIN: 'empresa_admin',
+    EMPRESA_USUARIO: 'empresa_usuario',
+};
 
 module.exports = ROLES;
