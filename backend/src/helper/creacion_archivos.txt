@@ -1,0 +1,11 @@
+Por medio del siguiente comando puedes crear todos los archivos `.js` de las carpetas `controllers` y `routes` de una sola vez, sin tener que crearlos manualmente.
+
+```bash
+# Navega a la carpeta de controllers y crea los archivos necesarios
+cd src/controllers && touch usuario.js empresa.js cotizacion.js oferta.js membresia.js notificacion.js
+
+# Regresa al directorio principal y navega a la carpeta de routes para crear los archivos
+cd ../routes && touch usuario.js empresa.js cotizacion.js oferta.js membresia.js notificacion.js
+
+# Regresa al directorio raíz del proyecto
+cd [MacBook](http://_vscodecontentref_/0)
