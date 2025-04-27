@@ -6,10 +6,10 @@ module.exports = {
     password: process.env.PASSWORD,
     database: process.env.DATABASE,
     host: process.env.HOST,
+    port: process.env.DB_PORT,
     dialect: process.env.DIALECT,
     timezone: '-03:00',  
-    dialectOptions: {    
-      useUTC: false,
+    dialectOptions: {
       dateStrings: true,
       typeCast: true
     },
@@ -20,10 +20,10 @@ module.exports = {
     password: process.env.PASSWORD_PROD,
     database: process.env.DATABASE_PROD,
     host: process.env.HOST_PROD,
+    port: process.env.DB_PORT,
     dialect: process.env.DIALECT_PROD,
     timezone: '-03:00',  
-    dialectOptions: {    
-      useUTC: false,
+    dialectOptions: {
       dateStrings: true,
       typeCast: true
     },
