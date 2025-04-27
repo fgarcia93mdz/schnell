@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   let cols = {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     nombre: { type: DataTypes.STRING, allowNull: false },
+    apellido: { type: DataTypes.STRING, allowNull: false },
     email: { type: DataTypes.STRING, allowNull: false, unique: true },
     contraseña: { type: DataTypes.STRING, allowNull: false },
     estado_clave: {
@@ -19,7 +20,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     estado: { type: DataTypes.ENUM('activo', 'suspendido'), defaultValue: 'activo' },
     fecha_creacion: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
-    fecha_actualizacion: { type: DataTypes.DATE, defaultValue: DataTypes.NOW }
+    fecha_actualizacion: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
+    borrado: { type: DataTypes.INTEGER, defaultValue: false }
   };
 
   let config = {
