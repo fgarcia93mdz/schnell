@@ -13,7 +13,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 
 // Swagger
-const { swaggerDocs } = require("./Swagger/V1/swagger_v1");
+// const { swaggerDocs } = require("./swagger/V1/swagger_v1.js");
 
 // Socket.IO
 const { initialize } = require("./config/socket");
@@ -22,6 +22,7 @@ const { initialize } = require("./config/socket");
 require('module-alias/register');
 
 // Rutas agrupadas
+/*
 const {
   usuarioRoutes,
   empresaRoutes,
@@ -30,11 +31,12 @@ const {
   membresiaRoutes,
   notificacionRoutes
 } = require("./routes");
+ */
 
 console.log("Servidor Schnell iniciando...");
 
 // Swagger Docs
-swaggerDocs(app, process.env.PORT_DEV);
+// swaggerDocs(app, process.env.PORT_DEV);
 
 // Middlewares
 app.use(cors());
@@ -58,12 +60,14 @@ app.use(session({
 }));
 
 // Rutas API
+/*
 app.use("/api/usuarios", usuarioRoutes);
 app.use("/api/empresas", empresaRoutes);
 app.use("/api/cotizaciones", cotizacionRoutes);
 app.use("/api/ofertas", ofertaRoutes);
 app.use("/api/membresias", membresiaRoutes);
 app.use("/api/notificaciones", notificacionRoutes);
+*/
 
 // Test de socket.io
 app.get("/test-socket", (req, res) => {
