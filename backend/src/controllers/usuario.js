@@ -14,43 +14,38 @@ const generateVerificationCode = (length) => {
   return code.slice(0, length);
 };
 
-// Crear un nuevo usuario
 const registrarUsuario = async (req, res) => {
   try {
-    const { nombre, email, rol } = req.body;
+    const { nombre, apellido, email, rol } = req.body;
 
     if (!nombre || !email) {
       return res.status(400).json({ mensaje: "Faltan datos obligatorios" });
     }
 
-    // Verificar si ya existe el usuario
     const usuarioExistente = await Usuario.findOne({ where: { email } });
     if (usuarioExistente) {
       return res.status(400).json({ mensaje: "El correo ya está registrado" });
     }
 
-    // Generar contraseña inicial aleatoria
     const passwordGenerada = generateVerificationCode(8);
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(passwordGenerada, salt);
 
-    // Crear el usuario
     const nuevoUsuario = await Usuario.create({
       nombre,
+      apellido,
       email,
       contraseña: hash,
-      rol: rol || 'empresa_usuario',  // Si no envían rol, asignar empresa_usuario
+      rol: rol || 'empresa_usuario',
       estado_clave: 'pendiente',
       estado: 'activo'
     });
 
-    // Renderizar el email con ejs
     const htmlEmail = await ejs.renderFile(
       path.join(__dirname, '../views/users/new_user.ejs'),
       { usuario: nuevoUsuario, password: passwordGenerada }
     );
 
-    // Enviar correo con las credenciales
     await sendMail({
       to: email,
       subject: "Bienvenido a Schnell - Acceso a la plataforma",
@@ -65,7 +60,6 @@ const registrarUsuario = async (req, res) => {
   }
 };
 
-// Listar todos los usuarios (solo admin_schnell o empresa_admin)
 const listarUsuarios = async (req, res) => {
   try {
     if (!['admin_schnell', 'empresa_admin'].includes(req.usuario.rol)) {

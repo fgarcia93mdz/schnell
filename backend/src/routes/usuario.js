@@ -11,15 +11,12 @@ const {
 
 // Middleware de autenticación
 const { authenticateToken } = require('../middlewares/authenticateToken');
-const authenticate = (req, res, next) => {
-  const token = req.headers['authorization']?.split(' ')[1];
-  if (!token) {
-    return res.status(401).json({ mensaje: "Token no proporcionado" });
-  }
-  authenticateToken(req, res, next);
-};
 
-// Middleware de validaciones
+const verifyRoles = require('../middlewares/verifyRoles');
+const ROLES = require('../config/roles');
+const SUBROLES = require('../config/subroles');
+
+
 const {
   validarRegistrarUsuario,
   validarLogin,
@@ -30,21 +27,21 @@ const {
   validarObtenerPerfilUsuario
 } = require('../middlewares/validarDatos');
 
-// Endpoints
+const { verificarCantidadUsuariosEmpresa } = require('../middlewares/verificarCantidadUsuariosEmpresa');
 
-// Registrar un nuevo usuario
-router.post('/registrarUsuario', validarRegistrarUsuario, registrarUsuario);
+
+router.post('/registrarUsuario', validarRegistrarUsuario, verifyRoles([ROLES.ADMIN_SCHNELL]), verificarCantidadUsuariosEmpresa('empresa_usuario', 'comprador_sr'), registrarUsuario);
 
 // Listar usuarios (admin_schnell o empresa_admin)
-router.get('/', authenticate, validarListarUsuarios, listarUsuarios);
+router.get('/', authenticateToken, validarListarUsuarios, listarUsuarios);
 
 // Actualizar usuario (por ID)
-router.put('/:id', authenticate, validarActualizarUsuario, actualizarUsuario);
+router.put('/:id', authenticateToken, validarActualizarUsuario, actualizarUsuario);
 
 // Cambiar contraseña propia
-router.put('/cambiar-contraseña', authenticate, validarCambiarContraseña, cambiarContraseña);
+router.put('/cambiar-contraseña', authenticateToken, validarCambiarContraseña, cambiarContraseña);
 
 // Eliminar (baja lógica) un usuario
-router.delete('/:id', authenticate, validarEliminarUsuario, eliminarUsuario);
+router.delete('/:id', authenticateToken, validarEliminarUsuario, eliminarUsuario);
 
 module.exports = router;
