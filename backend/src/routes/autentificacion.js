@@ -7,7 +7,11 @@ const { login,
  } = require('../controllers/autentificacion');
 
 // Middleware de validaciones
-const { validarLogin } = require('../middlewares/validarDatos');
+const { validarLogin,
+  validarCambiarContraseña
+ } = require('../middlewares/validarDatos');
+// Middleware de autenticación
+const { authenticateToken } = require('../middlewares/authenticateToken');
 
 // Login
 router.post('/login', validarLogin, login);

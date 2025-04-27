@@ -1,4 +1,5 @@
 module.exports = {
+  autentificacionRoutes: require('./autentificacion'),
   usuarioRoutes: require('./usuario'),
   empresaRoutes: require('./empresa'),
   cotizacionRoutes: require('./cotizacion'),
