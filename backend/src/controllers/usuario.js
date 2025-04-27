@@ -1,33 +1,64 @@
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
+const path = require('path');
+const ejs = require('ejs');
 const db = require('../database/models');
 const { Usuario } = db;
+const moment = require('moment');
+const { Op } = require('sequelize');
+const { sendMail } = require('../services/mailer');
+
+const generateVerificationCode = (length) => {
+  const code = crypto.randomBytes(Math.ceil(length / 2)).toString('hex');
+  return code.slice(0, length);
+};
 
 // Crear un nuevo usuario
 const registrarUsuario = async (req, res) => {
   try {
-    const { nombre, email, contraseña, rol } = req.body;
+    const { nombre, email, rol } = req.body;
 
-    if (!nombre || !email || !contraseña) {
+    if (!nombre || !email) {
       return res.status(400).json({ mensaje: "Faltan datos obligatorios" });
     }
 
+    // Verificar si ya existe el usuario
     const usuarioExistente = await Usuario.findOne({ where: { email } });
     if (usuarioExistente) {
       return res.status(400).json({ mensaje: "El correo ya está registrado" });
     }
 
+    // Generar contraseña inicial aleatoria
+    const passwordGenerada = generateVerificationCode(8);
     const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(contraseña, salt);
+    const hash = bcrypt.hashSync(passwordGenerada, salt);
 
+    // Crear el usuario
     const nuevoUsuario = await Usuario.create({
       nombre,
       email,
       contraseña: hash,
-      rol: rol || 'empresa_usuario'
+      rol: rol || 'empresa_usuario',  // Si no envían rol, asignar empresa_usuario
+      estado_clave: 'pendiente',
+      estado: 'activo'
     });
 
-    res.status(201).json({ mensaje: "Usuario creado con éxito", usuario: nuevoUsuario });
+    // Renderizar el email con ejs
+    const htmlEmail = await ejs.renderFile(
+      path.join(__dirname, '../views/users/new_user.ejs'),
+      { usuario: nuevoUsuario, password: passwordGenerada }
+    );
+
+    // Enviar correo con las credenciales
+    await sendMail({
+      to: email,
+      subject: "Bienvenido a Schnell - Acceso a la plataforma",
+      html: htmlEmail
+    });
+
+    return res.status(201).json({ mensaje: "Usuario creado y credenciales enviadas por correo", usuario: nuevoUsuario });
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ mensaje: "Error al registrar usuario" });

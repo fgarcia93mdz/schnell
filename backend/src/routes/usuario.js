@@ -4,7 +4,6 @@ const router = express.Router();
 const {
   registrarUsuario,
   listarUsuarios,
-  obtenerPerfilUsuario,
   actualizarUsuario,
   cambiarContraseña,
   eliminarUsuario
@@ -34,7 +33,7 @@ const {
 // Endpoints
 
 // Registrar un nuevo usuario
-router.post('/', authenticate, validarRegistrarUsuario, registrarUsuario);
+router.post('/registrarUsuario', validarRegistrarUsuario, registrarUsuario);
 
 // Listar usuarios (admin_schnell o empresa_admin)
 router.get('/', authenticate, validarListarUsuarios, listarUsuarios);
